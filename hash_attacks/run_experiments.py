@@ -1,13 +1,13 @@
-"""Run every hash experiment, save CSVs, and draw the presentation graphs.
-
+# torun every hash experiment, save CSVs, and draw the presentation graphs
+"""
 Run from the repository root:
-    python -m hash_attacks.run_experiments            # quick (~1 to 3 minutes)
-    python -m hash_attacks.run_experiments --full     # adds 56-bit rho and 24-bit multi-target
-    python -m hash_attacks.run_experiments --full --big   # also 64-bit rho (leave running)
+    python -m hash_attacks.run_experiments            #quick (~1 to 3 minutes)
+    python -m hash_attacks.run_experiments --full     #adds 56-bit rho and 24-bit multi-target
+    python -m hash_attacks.run_experiments --full --big   #also 64-bit rho (leave running)
 
-Outputs go to hash_attacks/results/.
+da outputs will b in hash_attacks/results/.
 
-WHY MANY TRIALS? A single collision search is very random: it can finish at
+doing many trials cause a single collision search is very random n so it can finish at
 a third of the expected work or take three times as long. Averaging many
 trials is what lets us compare our measurements against the theory lines.
 """
@@ -44,7 +44,7 @@ def _timed(fn):
 def collision_experiments(full, big, workers):
     """Birthday vs Floyd rho vs distinguished-point rho vs meaningful collisions."""
     rows = []
-    plan = [  # (method, n_bytes, trials)
+    plan = [  #(method, n_bytes, trials)
         ("birthday", 2, 50), ("birthday", 3, 30), ("birthday", 4, 15), ("birthday", 5, 3),
         ("floyd_rho", 2, 50), ("floyd_rho", 3, 30), ("floyd_rho", 4, 10),
         ("dp_rho", 2, 50), ("dp_rho", 3, 30), ("dp_rho", 4, 15), ("dp_rho", 5, 5),
@@ -112,7 +112,7 @@ def plot(collision_rows, multi_rows):
     labels = {"birthday": "Birthday (table)", "floyd_rho": "Floyd rho",
               "dp_rho": "Distinguished-point rho", "meaningful": r"Meaningful (\$10 vs \$10,000)"}
 
-    # Graph 1: work vs hash size, against the birthday bound.
+    #graph 1: work vs hash size, against the birthday bound.
     work = _means(collision_rows, "hash_evaluations", ("method", "n_bits"))
     fig, ax = plt.subplots(figsize=(7, 4.5))
     all_bits = sorted({r["n_bits"] for r in collision_rows})
@@ -130,7 +130,7 @@ def plot(collision_rows, multi_rows):
     fig.tight_layout()
     fig.savefig(RESULTS / "collision_work.png", dpi=200)
 
-    # Graph 2: memory, birthday table vs rho landmarks.
+    #graph 2: memory, birthday table vs rho landmarks.
     memory = _means(collision_rows, "stored_items", ("method", "n_bits"))
     fig, ax = plt.subplots(figsize=(7, 4.5))
     for method in ("birthday", "dp_rho"):
@@ -144,7 +144,7 @@ def plot(collision_rows, multi_rows):
     fig.tight_layout()
     fig.savefig(RESULTS / "collision_memory.png", dpi=200)
 
-    # Graph 3: multi-target speedup.
+    #graph 3: multi-target speedup.
     guesses = _means(multi_rows, "guesses", ("n_bits", "targets"))
     fig, ax = plt.subplots(figsize=(7, 4.5))
     for n_bits in sorted({n for n, _ in guesses}):
