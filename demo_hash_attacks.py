@@ -1,10 +1,8 @@
-"""Live demos for the hash-collision half. Run from the repository root:
+#live demo for hash collision part
+#for easier access run for repo root --
+#python demo_hash_attacks.py            -- all four demos
+#python demo_hash_attacks.py meaningful -- just one: collision | meaningful | multi | extension
 
-    python demo_hash_attacks.py            # all four demos
-    python demo_hash_attacks.py meaningful # just one: collision | meaningful | multi | extension
-
-Every signature step uses signatures/lamport.py unchanged.
-"""
 import os
 import sys
 import time

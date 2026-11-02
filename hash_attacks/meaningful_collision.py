@@ -1,34 +1,13 @@
-"""Meaningful collisions (Yuval's attack): two CONTRACTS with the same hash.
+#sooo tis attack finds a collision between the 2 contracts A n B  
+#signatures sign the hash, hence Alice's signature on A also verifies on B.
 
-Random collisions (two blobs of junk bytes) don't hurt anyone. This attack
-finds a collision between:
-    contract A: Alice pays $10       (she happily signs this)
-    contract B: Alice pays $10,000   (the attacker's version)
-Signatures sign the HASH, so Alice's signature on A also verifies on B.
+#one template yields 2^(n-1) distinct versions of each unique contract, all meaning the same thing. 
 
-HOW WE GENERATE MANY VERSIONS OF A CONTRACT
-Each n-byte value x is turned into a contract (render_contract). Every bit
-of x controls one "choice point" in the template:
-  * one choice point is the amount itself: $10 or $10,000
-  * every other choice point is a tiny, harmless variation: a synonym
-    ("pay" or "transfer") or a single vs double space after a word.
-So one template yields 2^(n-1) distinct versions of EACH contract, all
-meaning the same thing. Double spaces are nearly invisible on screen, which
-is exactly why Yuval suggested them in 1979.
-
-HOW WE FIND THE COLLISION
-We plug render_contract into Pollard's rho: f(x) = H(render_contract(x)).
-Rho finds x != y with H(render(x)) == H(render(y)). The amount bit of x and
-y is effectively random, so about half of the collisions pair a $10 version
-with a $10,000 version. When both got the same amount, we take the next one.
-Expected cost: about 2 times the plain birthday bound.
-"""
 from hash_attacks.pollards_rho import StepFunction, distinguished_point_rho
 
 AMOUNTS = ("$10", "$10,000")
 
-# The template is a list of pieces. A plain string is fixed text. A tuple
-# (option_0, option_1) is a choice point controlled by one bit of x.
+#the template is a list of pieces
 _BODY = [
     ("Payment Agreement", "Payment Contract"), "\n\n",
     "I, Alice Tan, ", ("agree", "promise"), " to ", ("pay", "transfer"),
@@ -42,8 +21,7 @@ _BODY = [
     ("is governed by", "falls under"), " the laws of Singapore.\n\n",
 ]
 
-# A normal-looking closing paragraph. After each word we add a choice point:
-# single space or double space.
+#vv normal-looking closing paragraph. After each word we add a choice point - single space or double space.
 _FOOTER = (
     "Both parties confirm that they have read and understood every term of "
     "this agreement and sign it of their own free will. Two original copies "
@@ -65,15 +43,8 @@ TEMPLATE = _build_template()
 CHOICE_POINTS = sum(isinstance(p, tuple) for p in TEMPLATE)
 AMOUNT_CHOICE = [p for p in TEMPLATE if isinstance(p, tuple)].index(AMOUNTS)
 
-
+#for speed
 def _build_byte_tables():
-    """Speed trick: precompute text fragments one byte at a time.
-
-    Split the template into segments containing 8 choice points each. For
-    segment j there are only 256 possible texts (one per value of byte j),
-    so we render all 256 once. Rendering a contract is then just
-    "look up each byte's fragment and glue them together".
-    """
     segments, current, choices = [], [], 0
     for piece in TEMPLATE:
         current.append(piece)
@@ -88,7 +59,7 @@ def _build_byte_tables():
     for segment in segments:
         table = []
         for byte in range(256):
-            text, bit = [], 7  # most significant bit = first choice point
+            text, bit = [], 7  #msb wld be the first choice point
             for piece in segment:
                 if isinstance(piece, tuple):
                     text.append(piece[(byte >> bit) & 1])
@@ -101,16 +72,14 @@ def _build_byte_tables():
 
 
 _TABLES, _TAIL = _build_byte_tables()
-MAX_BYTES = len(_TABLES)  # largest hash size (in bytes) we can support
+MAX_BYTES = len(_TABLES)  #the largest hash size 
 
-
+#turning an n-byte value into 1 specific ver of the contract
 def render_contract(x: bytes) -> bytes:
-    """Turn an n-byte value into one specific version of the contract."""
     n = len(x)
     if n > MAX_BYTES:
         raise ValueError("not enough variation points for this hash size")
-    # Bytes of x choose fragments for the first n segments. Remaining segments
-    # use byte 0 (every choice = option 0), so different x -> different text.
+    #different x hence different text.
     return (b"".join(_TABLES[j][x[j]] for j in range(n))
             + b"".join(table[0] for table in _TABLES[n:]) + _TAIL)
 
@@ -120,7 +89,7 @@ def contract_amount(message: bytes) -> str:
 
 
 def find_meaningful_collision(n_bytes: int, workers: int = None):
-    """Return (cheap_contract, expensive_contract, rho_result, collisions_tried)."""
+    #so return (cheap_contract, expensive_contract, rho_result, collisions_tried)
     step = StepFunction(n_bytes, encoder=render_contract)
     tried = 0
     generator = distinguished_point_rho(step, workers)
@@ -129,8 +98,8 @@ def find_meaningful_collision(n_bytes: int, workers: int = None):
             tried += 1
             amounts = {contract_amount(result.message_a): result.message_a,
                        contract_amount(result.message_b): result.message_b}
-            if len(amounts) == 2:  # one $10 and one $10,000: success
+            if len(amounts) == 2:  #success!!
                 return amounts[AMOUNTS[0]], amounts[AMOUNTS[1]], result, tried
-            # Both versions have the same amount: harmless, keep searching.
+            #both versions have the same amount;; keep searching.
     finally:
         generator.close()
