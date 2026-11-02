@@ -1,7 +1,7 @@
 import unittest
 from functools import partial
 from signatures.lamport import generate_keypair, sign, verify, sha256_truncated
-from attacks.lamport_reuse import collect_exposed, forge_for_message, find_forgery
+from signature_attacks.lamport_reuse import collect_exposed, forge_for_message, find_forgery
 
 class TestLamportReuse(unittest.TestCase):
     def test_reuse_forgery(self):

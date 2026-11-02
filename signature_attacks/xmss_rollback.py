@@ -1,6 +1,6 @@
 """Rollback exploit: reuse a WOTS+ leaf key, then FORGE a new XMSS message."""
 from dataclasses import dataclass
-from attacks.wots_attacks import search_key_reuse
+from signature_attacks.wots_attacks import search_key_reuse
 from signatures.xmss import XMSSSigner, XMSSSignature, verify
 
 

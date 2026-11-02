@@ -1,7 +1,7 @@
 """Run both WOTS+ attacks with practical toy parameters."""
 from signatures.wots_plus import (generate_keypair, sign, verify,
                                   signing_digits, base16_digits)
-from attacks.wots_attacks import (sign_without_checksum, verify_without_checksum,
+from signature_attacks.wots_attacks import (sign_without_checksum, verify_without_checksum,
     search_checksum_removal, extend_signature, collect_reused_positions,
     search_key_reuse)
 

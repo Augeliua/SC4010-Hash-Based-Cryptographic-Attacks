@@ -1,7 +1,7 @@
 """Regression tests: every claimed forgery must pass its verifier."""
 import unittest
 from signatures.wots_plus import generate_keypair, sign, verify
-from attacks.wots_attacks import (sign_without_checksum, verify_without_checksum,
+from signature_attacks.wots_attacks import (sign_without_checksum, verify_without_checksum,
     search_checksum_removal, extend_signature, search_key_reuse)
 
 

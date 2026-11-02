@@ -14,7 +14,7 @@ import time
 from functools import partial
 from pathlib import Path
 
-from attacks.lamport_reuse import collect_exposed, exposed_count, forge_for_message
+from signature_attacks.lamport_reuse import collect_exposed, exposed_count, forge_for_message
 from signatures.lamport import generate_keypair, sha256_truncated, sign, verify
 
 # Each row studies a different number of messages signed with ONE reused key.
