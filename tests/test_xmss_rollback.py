@@ -2,7 +2,7 @@
 import unittest
 from dataclasses import replace
 from signatures.xmss import XMSSSigner, verify
-from attacks.xmss_rollback import perform_rollback_attack
+from signature_attacks.xmss_rollback import perform_rollback_attack
 
 
 class XMSSTests(unittest.TestCase):

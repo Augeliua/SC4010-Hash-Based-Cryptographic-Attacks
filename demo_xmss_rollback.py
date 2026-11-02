@@ -1,6 +1,6 @@
 """Run from project root: python demo_xmss_rollback.py"""
 from signatures.xmss import XMSSSigner, verify
-from attacks.xmss_rollback import perform_rollback_attack
+from signature_attacks.xmss_rollback import perform_rollback_attack
 
 # 2-byte WOTS+ hashes deliberately weaken the demo for fast attacks.
 # Tree hashes remain SHA-256. 2**4 = 16 distinct WOTS+ keys available.

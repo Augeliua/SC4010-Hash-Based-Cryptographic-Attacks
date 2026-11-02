@@ -1,7 +1,7 @@
 """Run from repository root: python demo_lamport_forgery.py"""
 from functools import partial
 from signatures.lamport import generate_keypair, sign, verify, sha256_truncated
-from attacks.lamport_reuse import collect_exposed, find_forgery, exposed_count
+from signature_attacks.lamport_reuse import collect_exposed, find_forgery, exposed_count
 
 
 def main():
