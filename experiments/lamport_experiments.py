@@ -1,11 +1,9 @@
-"""Milestone 3: measure what happens when Alice reuses a Lamport signing key.
+# measure what happens when Alice reuses a Lamport signing key.
 
-Run from the GitHub repository root:
-    python -m experiments.lamport_experiments
+# Run from the GitHub repository root:
+#    python -m experiments.lamport_experiments
 
-Only uses Python's standard library. The random seed controls test messages;
-real private secrets still come from the secure RNG inside generate_keypair().
-"""
+# note: real private secrets still come from the secure RNG inside generate_keypair().
 
 import csv
 import random
@@ -28,7 +26,7 @@ OUTPUT_DIR = Path('experiments') / 'results'
 
 
 def trial(hash_bytes, observed_count, rng):
-    """Run one independent reuse attack and return its measurements."""
+    #Run one independent reuse attack and return its measurements.
     hash_fn = partial(sha256_truncated, digest_bytes=hash_bytes)
     private, public = generate_keypair(hash_fn)
 
@@ -81,7 +79,7 @@ def trial(hash_bytes, observed_count, rng):
 
 
 def run(trials=TRIALS, seed=SEED):
-    """Aggregate repeated trials into CSV files and a console summary."""
+    #aggregate repeated trials into CSV files and a console summary.
     rng = random.Random(seed)  # Reproducible experiment messages only.
     raw = []
     summary = []
