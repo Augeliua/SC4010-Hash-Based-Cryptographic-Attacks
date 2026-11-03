@@ -32,7 +32,7 @@ def forge_for_message(target, exposed, hash_fn):
     bits = message_bits(target, hash_fn)
     if len(bits) != len(exposed):
         raise ValueError("Target hash length differs from observations")
-.
+
     if any(bit not in exposed[i] for i, bit in enumerate(bits)):
         return None
 

@@ -1,3 +1,4 @@
+#small smoke test
 import unittest
 from hashlib import sha256
 from signatures.lamport import generate_keypair, sign, verify, sha256_truncated

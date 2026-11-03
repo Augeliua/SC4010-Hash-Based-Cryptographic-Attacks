@@ -1,4 +1,4 @@
-"""Small smoke tests for Milestone 3; no statistical claims from these tests."""
+#small smoke test
 import random
 import unittest
 from experiments.lamport_experiments import trial
