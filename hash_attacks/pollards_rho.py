@@ -97,7 +97,8 @@ def _walk_trails(step: StepFunction, dp_bits: int, step_budget: int):
 
 #find exactly where the walks merged
 def recover_collision(step, start_1, length_1, start_2, length_2):
-    #impt --- returns none if one start point simply lay on the other walk (no real collision, i.e the "Robin Hood" case)
+    #impt --- returns none if one start point simply 
+    # lay on the other walk (no real collision, i.e the "Robin Hood" case)
 
     a, b, evaluations = start_1, start_2, 0
     

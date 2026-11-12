@@ -9,7 +9,7 @@ import time
 from hashlib import sha256
 
 from hash_attacks.common import expected_collision_work, lamport_hash
-from hash_attacks.length_extension import NaiveServer, attack_unknown_key_length
+from hash_attacks.length_extension import NaiveServer, HMACServer, attack_unknown_key_length
 from hash_attacks.meaningful_collision import find_meaningful_collision
 from hash_attacks.multi_target import crack_public_key, forged_private_key
 from hash_attacks.pollards_rho import find_collision
@@ -81,6 +81,12 @@ def demo_extension():
     print(f"Forged message: {forged!r}")
     print(f"Forged tag:     {forged_tag.hex()}")
     print("Server accepts forged message:", server.accepts(forged, forged_tag))
+    print()
+    hmac_server = HMACServer(os.urandom(23))
+    hmac_tag = hmac_server.tag(message)
+    result = attack_unknown_key_length(hmac_server, message, hmac_tag, b"&role=admin")
+    print("With HMAC, same attack over all 64 key lengths:",
+          "FAILS" if result is None else "succeeds")
 
 
 DEMOS = {"collision": demo_collision, "meaningful": demo_meaningful,

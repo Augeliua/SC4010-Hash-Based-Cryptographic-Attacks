@@ -18,7 +18,7 @@ class CrackResult:
 
 def crack_public_key(public_key: LamportPublicKey, n_bytes: int,
                      max_guesses: int = None) -> CrackResult:
-    #oputtin every public fingerprint into a dictionary
+    #outputting every public fingerprint into a dictionary
     #putting it in a list, because two slots could (rarely) share a fingerprint
     targets = {}
     for position, pair in enumerate(public_key.hashes):
