@@ -1,4 +1,5 @@
-"""Run: python -m unittest discover -s tests -v"""
+#small smoke test
+#Run: python -m unittest discover -s tests -v
 import unittest
 from dataclasses import replace
 from signatures.xmss import XMSSSigner, verify

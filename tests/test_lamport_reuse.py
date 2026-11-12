@@ -1,3 +1,4 @@
+#small smoke test
 import unittest
 from functools import partial
 from signatures.lamport import generate_keypair, sign, verify, sha256_truncated

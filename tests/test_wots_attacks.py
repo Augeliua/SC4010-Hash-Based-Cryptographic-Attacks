@@ -1,4 +1,4 @@
-"""Regression tests: every claimed forgery must pass its verifier."""
+#small smoke test
 import unittest
 from signatures.wots_plus import generate_keypair, sign, verify
 from signature_attacks.wots_attacks import (sign_without_checksum, verify_without_checksum,

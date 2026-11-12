@@ -1,4 +1,5 @@
-"""Run with: python -m unittest discover -s tests -v"""
+#small smoke test
+#Run with: python -m unittest discover -s tests -v
 import unittest
 from signatures.wots_plus import (
     base16_digits, checksum_digits, chain, generate_keypair, lengths,
